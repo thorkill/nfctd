@@ -1,0 +1,60 @@
+NFCTD - Netfilter Conntrack net-snmp statistics
+===============================================
+
+0. About
+--------
+This tools collects statistics about changes in netfilter-conntrack
+and makes it accessible via snmp-agent.
+
+nfctd lets you organize your statistics using bpf-filter - see
+config/nfctd.conf.dist
+
+1. Quick start
+--------------
+$> git clone <URL> nfctd
+$> cd nfctd
+$> autoreconf -i
+$> ./configure --prefix=/opt/nfctd/
+$> make && make install
+$> systemctl daemon-reload
+$> systemctl enable nfctd.service
+$> systemctl start nfctd.service
+
+2. Intergration with collectd
+-----------------------------
+Include collectd-nfctd.types.db in your collectd.conf:
+
+    TypesDB     "/etc/nfctd/collectd-nfctd.types.db"
+
+2.1 Query snmp
+--------------
+
+Example of collectd.conf snmp plugin section:
+
+<Plugin snmp>
+   <Data "nfctd">
+       Type "nfctd"
+       Table true
+       Instance "RRZN-MIB::groupId"
+       Values "RRZN-MIB::ipv4IcmpAssured" "RRZN-MIB::ipv4IcmpCount" "RRZN-MIB::ipv4IcmpHalfAssured" "RRZN-MIB::ipv4IcmpUnreplied" \
+              "RRZN-MIB::ipv4TcpAssured" "RRZN-MIB::ipv4TcpCount" "RRZN-MIB::ipv4TcpHalfAssured" "RRZN-MIB::ipv4TcpStateClose" \
+              "RRZN-MIB::ipv4TcpStateCloseWait" "RRZN-MIB::ipv4TcpStateEstablished" "RRZN-MIB::ipv4TcpStateFinWait" \
+              "RRZN-MIB::ipv4TcpStateLastAck" "RRZN-MIB::ipv4TcpStateSynRecv" "RRZN-MIB::ipv4TcpStateSynSent" \
+              "RRZN-MIB::ipv4TcpStateSynSentAgain" "RRZN-MIB::ipv4TcpStateTimeWait" "RRZN-MIB::ipv4TcpUnreplied" \
+              "RRZN-MIB::ipv4UdpAssured" "RRZN-MIB::ipv4UdpCount" "RRZN-MIB::ipv4UdpHalfAssured" "RRZN-MIB::ipv4UdpUnreplied" \
+              "RRZN-MIB::ipv6IcmpAssured" "RRZN-MIB::ipv6IcmpCount" "RRZN-MIB::ipv6IcmpHalfAssured" "RRZN-MIB::ipv6IcmpUnreplied" \
+              "RRZN-MIB::ipv6TcpAssured" "RRZN-MIB::ipv6TcpCount" "RRZN-MIB::ipv6TcpHalfAssured" "RRZN-MIB::ipv6TcpStateClose" \
+              "RRZN-MIB::ipv6TcpStateCloseWait" "RRZN-MIB::ipv6TcpStateEstablished" "RRZN-MIB::ipv6TcpStateFinWait" \
+              "RRZN-MIB::ipv6TcpStateLastAck" "RRZN-MIB::ipv6TcpStateSynRecv" "RRZN-MIB::ipv6TcpStateSynSent" \
+              "RRZN-MIB::ipv6TcpStateSynSentAgain" "RRZN-MIB::ipv6TcpStateTimeWait" "RRZN-MIB::ipv6TcpUnreplied" \
+              "RRZN-MIB::ipv6UdpAssured" "RRZN-MIB::ipv6UdpCount" "RRZN-MIB::ipv6UdpHalfAssured" "RRZN-MIB::ipv6UdpUnreplied"
+   </Data>
+
+   <Host "localhost">
+       Address "127.0.0.1"
+       Version 1
+       Community "public"
+       Collect "nfctd"
+       Interval 300
+   </Host>
+</Plugin>

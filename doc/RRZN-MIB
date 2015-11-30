@@ -1,0 +1,534 @@
+-- RRZN Root MIB Copyright (c) 2015 Rafal Lesniak & Markus Kötter
+-- <koetter@rrzn.uni-hannover.de>
+-- Licensed under the GNU Public License (GPL) version 2
+-- Imports
+
+RRZN-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+    OBJECT-GROUP
+        FROM SNMPv2-CONF
+    Integer32, MODULE-IDENTITY, OBJECT-IDENTITY, OBJECT-TYPE,
+    Unsigned32, enterprises
+        FROM SNMPv2-SMI
+    TEXTUAL-CONVENTION
+        FROM SNMPv2-TC
+    ;
+
+-- Description and update information
+
+rrzn MODULE-IDENTITY
+    LAST-UPDATED  "201511161457Z"
+    ORGANIZATION
+        "N/A"
+    CONTACT-INFO
+        "Editor:
+         Markus Koetter
+         EMail: <koetter@rrzn.uni-hannover.de>"
+    DESCRIPTION
+        "This file defines the private RRZN MIB Extensions"
+    REVISION      "201511161457Z"
+    DESCRIPTION
+        "Initial Revision"
+    ::= { enterprises 18141 }
+
+snmp OBJECT IDENTIFIER ::= { rrzn 1 }
+
+linux OBJECT IDENTIFIER ::= { snmp 1 }
+
+conntrack OBJECT IDENTIFIER ::= { linux 1 }
+
+nfctd OBJECT IDENTIFIER ::= { conntrack 5 }
+
+
+ipv4Table OBJECT-TYPE
+    SYNTAX        SEQUENCE OF Ipv4Entry
+    MAX-ACCESS    not-accessible
+    STATUS        current
+    DESCRIPTION
+        ""
+    ::= { l3 1 }
+
+ipv4Entry OBJECT-TYPE
+    SYNTAX        Ipv4Entry
+    MAX-ACCESS    not-accessible
+    STATUS        current
+    DESCRIPTION
+        ""
+    INDEX
+        { ipv4Protocol }
+    ::= { ipv4Table 1 }
+
+nfctTable OBJECT-TYPE
+    SYNTAX      SEQUENCE OF nfctEntry
+    MAX-ACCESS    not-accessible
+    STATUS      current
+    DESCRIPTION
+        "Contains conntrack statistics per group"
+    INDEX { nfctEntry }
+    ::= { nfctd 1 }
+
+nfctEntry OBJECT-TYPE
+    SYNTAX      nfctEntry
+    MAX-ACCESS    not-accessible
+    STATUS      current
+    DESCRIPTION
+        ""
+    INDEX { groupId }
+    ::= { nfctTable 1 }
+
+nfctEntry ::= SEQUENCE
+{
+    groupId   Unsigned32,
+
+    ipv4TcpCount                Unsigned32,
+    ipv4TcpAssured              Unsigned32,
+    ipv4TcpHalfAssured          Unsigned32,
+    ipv4TcpUnreplied            Unsigned32,
+    ipv4TcpStateSynSent         Unsigned32,
+    ipv4TcpStateSynRecv         Unsigned32,
+    ipv4TcpStateEstablished     Unsigned32,
+    ipv4TcpStateFinWait         Unsigned32,
+    ipv4TcpStateCloseWait       Unsigned32,
+    ipv4TcpStateLastAck         Unsigned32,
+    ipv4TcpStateTimeWait        Unsigned32,
+    ipv4TcpStateClose           Unsigned32,
+    ipv4TcpStateSynSentAgain    Unsigned32,
+    ipv4UdpCount                Unsigned32,
+    ipv4UdpAssured              Unsigned32,
+    ipv4UdpHalfAssured          Unsigned32,
+    ipv4UdpUnreplied            Unsigned32,
+    ipv4IcmpCount               Unsigned32,
+    ipv4IcmpAssured             Unsigned32,
+    ipv4IcmpHalfAssured         Unsigned32,
+    ipv4IcmpUnreplied           Unsigned32,
+    ipv6TcpCount                Unsigned32,
+    ipv6TcpAssured              Unsigned32,
+    ipv6TcpHalfAssured          Unsigned32,
+    ipv6TcpUnreplied            Unsigned32,
+    ipv6TcpStateSynSent         Unsigned32,
+    ipv6TcpStateSynRecv         Unsigned32,
+    ipv6TcpStateEstablished     Unsigned32,
+    ipv6TcpStateFinWait         Unsigned32,
+    ipv6TcpStateCloseWait       Unsigned32,
+    ipv6TcpStateLastAck         Unsigned32,
+    ipv6TcpStateTimeWait        Unsigned32,
+    ipv6TcpStateClose           Unsigned32,
+    ipv6TcpStateSynSentAgain    Unsigned32,
+    ipv6UdpCount                Unsigned32,
+    ipv6UdpAssured              Unsigned32,
+    ipv6UdpHalfAssured          Unsigned32,
+    ipv6UdpUnreplied            Unsigned32,
+    ipv6IcmpCount               Unsigned32,
+    ipv6IcmpAssured             Unsigned32,
+    ipv6IcmpHalfAssured         Unsigned32,
+    ipv6IcmpUnreplied           Unsigned32,
+    bpfFilter                   OCTET STRING,
+    label                       OCTET STRING
+    }
+
+groupId OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 1 }
+
+
+ipv4TcpCount OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 2 }
+
+
+ipv4TcpAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 3 }
+
+
+ipv4TcpHalfAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 4 }
+
+
+ipv4TcpUnreplied OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 5 }
+
+
+ipv4TcpStateSynSent OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 6 }
+
+
+ipv4TcpStateSynRecv OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 7 }
+
+
+ipv4TcpStateEstablished OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 8 }
+
+
+ipv4TcpStateFinWait OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 9 }
+
+
+ipv4TcpStateCloseWait OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 10 }
+
+
+ipv4TcpStateLastAck OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 11 }
+
+
+ipv4TcpStateTimeWait OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 12 }
+
+
+ipv4TcpStateClose OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 13 }
+
+
+ipv4TcpStateSynSentAgain OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 14 }
+
+
+ipv4UdpCount OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 15 }
+
+
+ipv4UdpAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 16 }
+
+
+ipv4UdpHalfAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 17 }
+
+
+ipv4UdpUnreplied OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 18 }
+
+
+ipv4IcmpCount OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 19 }
+
+
+ipv4IcmpAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 20 }
+
+
+ipv4IcmpHalfAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 21 }
+
+
+ipv4IcmpUnreplied OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 22 }
+
+
+ipv6TcpCount OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 23 }
+
+
+ipv6TcpAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 24 }
+
+
+ipv6TcpHalfAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 25 }
+
+
+ipv6TcpUnreplied OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 26 }
+
+
+ipv6TcpStateSynSent OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 27 }
+
+
+ipv6TcpStateSynRecv OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 28 }
+
+
+ipv6TcpStateEstablished OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 29 }
+
+
+ipv6TcpStateFinWait OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 30 }
+
+
+ipv6TcpStateCloseWait OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 31 }
+
+
+ipv6TcpStateLastAck OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 32 }
+
+
+ipv6TcpStateTimeWait OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 33 }
+
+
+ipv6TcpStateClose OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 34 }
+
+
+ipv6TcpStateSynSentAgain OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 35 }
+
+
+ipv6UdpCount OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 36 }
+
+
+ipv6UdpAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 37 }
+
+
+ipv6UdpHalfAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 38 }
+
+
+ipv6UdpUnreplied OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 39 }
+
+
+ipv6IcmpCount OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 40 }
+
+
+ipv6IcmpAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 41 }
+
+
+ipv6IcmpHalfAssured OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 42 }
+
+
+ipv6IcmpUnreplied OBJECT-TYPE
+    SYNTAX   Unsigned32
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 43 }
+
+
+bpfFilter OBJECT-TYPE
+    SYNTAX   OCTET STRING
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 44 }
+
+
+label OBJECT-TYPE
+    SYNTAX   OCTET STRING
+    MAX-ACCESS   read-only
+    STATUS   current
+    DESCRIPTION
+        ""
+    ::= { nfctEntry 45 }
+
+END

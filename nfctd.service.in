@@ -1,0 +1,11 @@
+[Unit]
+Description=Netfilter Conntrack NET-SNMP statistics
+After=network.target
+
+[Service]
+PIDFile=/var/run/nfctd.pid
+ExecStart=@prefix@/bin/nfctd @prefix@/etc/nfctd/nfctd.conf
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
