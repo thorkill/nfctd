@@ -39,7 +39,7 @@ init_nfctd(void)
 void
 initialize_table_nfctTable(void)
 {
-    const oid       nfctTable_oid[] =
+    static oid       nfctTable_oid[] =
         { 1, 3, 6, 1, 4, 1, 18141, 1, 1, 1, 5, 1 };
     const size_t    nfctTable_oid_len = OID_LENGTH(nfctTable_oid);
     netsnmp_handler_registration *reg;
@@ -661,8 +661,8 @@ nfctTable_handler(netsnmp_mib_handler *handler,
                     continue;
                 }
                 snmp_set_var_typed_value(request->requestvb, ASN_OCTET_STR,
-                                         table_entry->bpfFilter,
-                                         table_entry->bpfFilter_len);
+                                         (u_char *)table_entry->bpfFilter,
+                                         (ssize_t)table_entry->bpfFilter_len);
                 break;
             case COLUMN_LABEL:
                 if (!table_entry) {
@@ -671,8 +671,8 @@ nfctTable_handler(netsnmp_mib_handler *handler,
                     continue;
                 }
                 snmp_set_var_typed_value(request->requestvb, ASN_OCTET_STR,
-                                         table_entry->label,
-                                         table_entry->label_len);
+                                         (u_char *)table_entry->label,
+                                         (ssize_t)table_entry->label_len);
                 break;
             default:
                 netsnmp_set_request_error(reqinfo, request,

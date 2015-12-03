@@ -4,7 +4,7 @@ After=network.target
 
 [Service]
 PIDFile=/var/run/nfctd.pid
-ExecStart=@prefix@/bin/nfctd @prefix@/etc/nfctd/nfctd.conf
+ExecStart=@prefix@/bin/nfctd @sysconfdir@/nfctd/nfctd.conf
 Restart=on-failure
 
 [Install]

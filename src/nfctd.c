@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdint.h>
 
 #include <fcntl.h>
 #include <errno.h>
@@ -34,17 +35,19 @@
 #include <linux/netfilter/nf_conntrack_tcp.h>
 #include <libnetfilter_conntrack/libnetfilter_conntrack.h>
 
-#include <netinet/ip6.h>
-#include <netinet/ip.h>
-#include <netinet/tcp.h>
-#include <netinet/udp.h>
-
 #include <pcap/pcap.h>
 #include <pcap/bpf.h>
 
 #include <net-snmp/net-snmp-config.h>
 #include <net-snmp/net-snmp-includes.h>
 #include <net-snmp/agent/net-snmp-agent-includes.h>
+
+#include <netinet/ip6.h>
+#include <netinet/ip.h>
+#define __FAVOR_BSD
+#include <netinet/tcp.h>
+#include <netinet/udp.h>
+#undef __FAVOR_BSD
 
 #include "nfctd-snmp.h"
 #include "lcfg_static.h"
@@ -460,7 +463,7 @@ static void timeout_cb_snmp(EV_P_ ev_timer *w, int revents)
 {
 }
 
-static void io_snmp_cb(EV_P_ ev_timer *w, int revents)
+static void io_snmp_cb(EV_P_ ev_io *w, int revents)
 {
 }
 
