@@ -661,6 +661,7 @@ void nfctd_new(const char *config_path)
 	if( lcfg_parse(g_nfctd->config) != lcfg_status_ok )
 	{
 		fprintf(stderr, "lcfg error: %s\n", lcfg_error_get(g_nfctd->config) );
+		exit(EXIT_FAILURE);
 	}
 
 	nfctd_prepare();
