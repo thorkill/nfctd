@@ -1,12 +1,12 @@
 Source: nfctd
 Section: network
 Priority: extra
-Maintainer: Markus Kötter <koetter@luis.uni-hannover.de>
-Build-Depends: 
+Maintainer: Markus Koetter <koetter@luis.uni-hannover.de>
+Build-Depends:
  dh-autoreconf,
  dh-systemd,
- debhelper (>= 8.0.0), 
- libsnmp-dev, 
+ debhelper (>= 8.0.0),
+ libsnmp-dev,
  libnetfilter-conntrack-dev,
  libev-dev,
  libpcap0.8-dev,
@@ -18,14 +18,13 @@ Homepage: https://github.com/thorkill/nfctd
 
 Package: nfctd
 Architecture: any
-Depends: 
- ${shlibs:Depends}, 
- ${misc:Depends}, 
- libsnmp15 | libsnmp30, 
+Depends:
+ ${shlibs:Depends},
+ ${misc:Depends},
+ libsnmp15 | libsnmp30,
  snmpd,
  libnetfilter-conntrack3,
  libev4,
  libpcap0.8
 Description: Exports netfilter conntrack statistics via SNMP
  SNMP glue for netfilter conntrack statistics
-
