@@ -14,7 +14,7 @@ config/nfctd.conf.dist
 $> git clone <URL> nfctd
 $> cd nfctd
 $> autoreconf -i
-$> ./configure --prefix=/opt/nfctd/
+$> ./configure --prefix=/opt/nfctd/ --sysconfdir=/opt/nfctd/etc
 $> make && make install
 $> systemctl daemon-reload
 $> systemctl enable nfctd.service
