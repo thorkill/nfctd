@@ -577,7 +577,7 @@ void init_snmp_groups(void)
 void init_groups(void)
 {
 	struct lcfgx_tree_node *groups;
-	struct lcfgx_tree_node *root, *n, *y;
+	struct lcfgx_tree_node *root, *n;
 	struct nfctd_group *grp;
 
 	root = lcfgx_tree_new(g_nfctd->config);
@@ -600,17 +600,32 @@ void init_groups(void)
 			grp = grp->next;
 		}
 
-		lcfgx_get_string(n, &y, "label");
-		grp->label = strndup(y->value.string.data, y->value.string.len);
+		struct pathhelper {
+			const char *name;
+			struct lcfgx_tree_node *node;
+		} helper[3] =
+		{{.name = "label"}, {.name = "filter"}, {.name = "id"}};
 
-		lcfgx_get_string(n, &y, "filter");
-		grp->filter = strndup(y->value.string.data, y->value.string.len);
+		for( int i=0; i < sizeof( helper )/sizeof( helper[0] ); i++ )
+		{
+			if( lcfgx_get_string(n, &helper[i].node, helper[i].name) != LCFGX_PATH_FOUND_TYPE_OK )
+			{
+				fprintf(stderr, "missing label \"%s\" \n", helper[i].name);
+				exit(EXIT_FAILURE);
+			}
+		}
 
-		lcfgx_get_string(n, &y, "id");
-		grp->id = atoi(y->value.string.data);
+		grp->label = strndup(helper[0].node->value.string.data, helper[0].node->value.string.len);
+		grp->filter = strndup(helper[1].node->value.string.data, helper[1].node->value.string.len);
+		grp->id = atoi(helper[2].node->value.string.data);
 
 		grp->bpf = malloc(sizeof( struct bpf_program ) );
-		pcap_compile_nopcap(68, DLT_RAW, grp->bpf, grp->filter, 1, 0xffffffff);
+
+		if( pcap_compile_nopcap(68, DLT_RAW, grp->bpf, grp->filter, 1, 0xffffffff) != 0 )
+		{
+			fprintf(stderr, "could not compile pcap filter \"%s\" for id %i \n", grp->filter, grp->id);
+			exit(-1);
+		}
 
 		//fprintf(stderr, "group: id: %d label: '%s' filter: '%s'\n", grp->id, grp->label, grp->filter);
 	}
